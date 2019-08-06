@@ -1,0 +1,27 @@
+{% extends "template.html" %}
+{% block conteudo %}
+        <table class="table table-striped table-responsive table-bordered">
+            <thead class="thead-default">
+                <tr>
+                    <th>     </th>
+                    <th>Nome</th>
+                    <th>Play</th>
+                    <th>Watch</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for musica in musicas_simples %}
+                <tr>
+                    <td><img class="imagem-principal" src="{{ musica.foto }}" alt=""; width="100%"; height="100%"></td>
+                    <td>{{ musica.nome }}<p></p> <p>{{ musica.views }}</p> <p>{{ musica.duracao }}</p> </td>
+                    <form action="/play">
+                        <td><a href="{{ musica.link }}" class="btn btn-default">Play!</a></td>
+                    </form>
+                    <form action="/play">
+                        <td><a href="{{ musica.download }}" class="btn btn-default">Watch!</a></td>
+                    </form>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+{% endblock %}
