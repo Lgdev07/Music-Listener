@@ -3,6 +3,7 @@ import pafy
 import urllib.request
 import urllib.parse
 import re
+import pdb
 
 app = Flask(__name__)
 
@@ -38,12 +39,11 @@ def musicas():
     lista_musicas.clear()
     query_string = urllib.parse.urlencode({"search_query": request.form['pesquisa']})
     html_content = urllib.request.urlopen("http://www.youtube.com/results?" + query_string)
-    search_results = re.findall(r'href=\"\/watch\?v=(.{11})', html_content.read().decode())
-    lista_resultados = []
-    for i in search_results:
-        lista_resultados.append(f'http://www.youtube.com/watch?v=' + i)
-    for i in lista_resultados[::2]:
-        x = pafy.new(i)
+    search_results = re.findall(r'href=\"\/watch\?v=(.{11})', html_content.read().decode())[:5]
+    lista_resultados = [f'http://www.youtube.com/watch?v={i}' for i in search_results]
+
+    for link in lista_resultados:
+        x = pafy.new(link)
         musica1 = Playlist(x.title,
                           x.getbestaudio().url,
                           x.getbest().url,
