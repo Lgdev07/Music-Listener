@@ -8,11 +8,12 @@ import pdb
 app = Flask(__name__)
 
 class Playlist():
-    def __init__(self, nome, link, download, foto, views, duracao):
+    def __init__(self, nome, stream_audio, download_audio, stream_video, thumbnail, views, duracao):
         self.nome = nome
-        self.link = link
-        self.download = download
-        self.foto = foto
+        self.stream_audio = stream_audio
+        self.download_audio = download_audio
+        self.stream_video = stream_video
+        self.thumbnail = thumbnail
         self.views = f'Views: {views}'
         self.duracao = f'Duração: {duracao}'
 
@@ -27,6 +28,7 @@ def playlists(x):
     for i in range(tamanho):
         musica = Playlist(playlist['items'][i]['pafy'].title,
                           playlist['items'][i]['pafy'].getbestaudio().url,
+                          playlist['items'][i]['pafy'].getbestaudio(),
                           playlist['items'][i]['pafy'].getbest().url,
                           playlist['items'][i]['pafy'].bigthumb,
                           playlist['items'][i]['pafy'].viewcount,
@@ -40,12 +42,13 @@ def musicas():
     query_string = urllib.parse.urlencode({"search_query": request.form['pesquisa']})
     html_content = urllib.request.urlopen("http://www.youtube.com/results?" + query_string)
     search_results = re.findall(r'href=\"\/watch\?v=(.{11})', html_content.read().decode())[:5]
-    lista_resultados = [f'http://www.youtube.com/watch?v={i}' for i in search_results]
+    lista_resultados = set([f'http://www.youtube.com/watch?v={i}' for i in search_results])
 
     for link in lista_resultados:
         x = pafy.new(link)
         musica1 = Playlist(x.title,
                           x.getbestaudio().url,
+                          x.getbestaudio(),
                           x.getbest().url,
                           x.bigthumb,
                           x.viewcount,
@@ -65,7 +68,8 @@ def playlist():
 @app.route('/musica', methods=['POST', ])
 def musica():
     musicas()
-    return render_template('musica.html', titulo='Musica', musicas_simples=lista_musicas)
-
-
-app.run(debug=True)
+    return render_template(
+        'musica.html',
+        titulo='Musica', 
+        musicas_simples=lista_musicas,
+    )
