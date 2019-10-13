@@ -7,7 +7,6 @@
                     <th>Nome</th>
                     <th>Play</th>
                     <th>Watch</th>
-                    <th>Download</th>
                 </tr>
             </thead>
             <tbody>
@@ -20,9 +19,6 @@
                     </form>
                     <form>
                         <td><a href="{{ musica.stream_video }}" class="btn btn-default">Watch!</a></td>
-                    </form>
-                    <form> 
-                        <td><a href="{{url_for ('download_audio') }}" class="btn btn-default">Download Audio!</a></td>
                     </form>
                 </tr>
             {% endfor %}
