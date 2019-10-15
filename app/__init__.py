@@ -46,14 +46,16 @@ def musicas():
 
     for link in lista_resultados:
         x = pafy.new(link)
-        musica1 = Playlist(x.title,
-                          x.getbestaudio().url,
-                          x.getbestaudio(),
-                          x.getbest().url,
-                          x.bigthumb,
-                          x.viewcount,
-                          x.duration)
-        lista_musicas.append(musica1)
+        lista_musicas.append(
+            Playlist(
+            x.title,
+            x.getbestaudio().url,
+            x.getbestaudio(),
+            x.getbest().url,
+            x.bigthumb,
+            x.viewcount,
+            x.duration
+        ))
     lista_resultados.clear()
 
 @app.route('/')
